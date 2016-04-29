@@ -1,0 +1,114 @@
+body {
+    font-family: monospace;
+}
+
+button {
+    font-family: inherit;
+}
+
+input {
+    font-family: inherit;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+}
+
+ul.inline-list li {
+    display: inline-block;
+}
+
+ul.block-list li {
+    padding: 5px 0;
+}
+
+#nav {
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid;
+}
+
+#nav li {
+    margin-right: 10px;
+}
+
+#nav a {
+    text-decoration: none;
+}
+
+#notifications {
+    border: 1px solid;
+    padding: 4px 10px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.divider {
+    padding: 0 10px;
+}
+
+.header {
+    margin-bottom: 5px;
+}
+
+.create-btn {
+    margin-bottom: 20px;
+}
+
+#breadcrumb {
+    margin-bottom: 20px;
+}
+
+.breadcrumb-link::after {
+    content: "/";
+    padding: 0 10px;
+}
+
+.breadcrumb-link:last-child::after {
+    content: "";
+}
+
+.breadcrumb-link:last-child a {
+    color: #000;
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+}
+
+.selected-item a {
+    color: #000;
+    background-color: #eee;
+    pointer-events: none;
+    cursor: default;
+}
+
+.list-header {
+    border-bottom: 1px solid;
+}
+
+#filter {
+    margin-bottom: 20px;
+}
+
+.cell-2 {
+    width: 20%;
+}
+
+.cell-3 {
+    width: 30%;
+}
+
+.cell-5 {
+    width: 50%;
+}
+
+.row {
+    display: flex;
+}
