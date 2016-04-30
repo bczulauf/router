@@ -1,6 +1,11 @@
 // A hash to store our routes.
 var routes = {}
 
+// Registers a route.
+const route = (path, loadFn) => {
+    routes[path] = { load: loadFn }
+}
+
 const navArray = ["home", "resources", "dashboards", "help", "billing", "account"]
 const nav = $("#nav")
 const navTemplate = `<ul class="inline-list">${navArray.map(item => `<li id="${item}"><a href="#/${item}">${item}</a></li>`).join("")}</ul>`
@@ -23,11 +28,6 @@ const updateBreadcrumb = (items) => {
 
 const routeTo = (route) => {
     window.location.href = route;
-}
-
-// Registers a route.
-const route = (path, loadFn) => {
-    routes[path] = { load: loadFn }
 }
 
 // Routes.

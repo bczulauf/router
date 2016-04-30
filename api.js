@@ -1,25 +1,23 @@
 // Mocks the get resources call.
 const getResources = () => {
     return new Promise(function(resolve, reject) {
-        resolve([{ id: "0", name: "fizztap", kind: "web app", lastModified: "5/12/15" }, { id: "1", name: "test vm", kind: "virtual machine", lastModified: "2/6/16" }])
+        resolve([{ id: "0", name: "fizztap", kind: "website", lastModified: "5/12/15" }, { id: "1", name: "test vm", kind: "virtualmachine", lastModified: "2/6/16" }])
     })
 }
 
 // Mocks the get resourceById call.
 const getResourceById = (id) => {
     return new Promise(function(resolve, reject) {
-        var items
+        var data
         
         switch(id) {
             case "0":
-                items = [{ name: "General Info", url: "/info" }, { name: "Publish", url: "/publish" }, { name: "Settings", url: "/settings" }]
+                data = { name: "FizzTap", url: "www.fizztap.com", ip: "985.454.454" }
                 break
             case "1":
-                items = [{ name: "General Info", url: "/info" }, { name: "VM stuff", url: "/publish" }, { name: "Settings", url: "/settings" }]
+                data = { name: "Test VM", kind: "linux" }
                 break
         }
-        resolve({
-            menuItems: items
-        })
+        resolve(data)
     })
 }
