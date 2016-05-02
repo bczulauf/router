@@ -1,5 +1,6 @@
 body {
     font-family: monospace;
+    margin-top: 0;
 }
 
 button {
@@ -30,7 +31,7 @@ ul.block-list li {
 }
 
 #nav {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 10px 0;
     border-bottom: 1px solid;
 }
@@ -41,13 +42,13 @@ ul.block-list li {
 
 #nav a {
     text-decoration: none;
+    text-transform: capitalize;
 }
 
 #notifications {
     border: 1px solid;
     padding: 4px 10px;
-    margin-bottom: 20px;
-    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .divider {
@@ -59,11 +60,11 @@ ul.block-list li {
 }
 
 .create-btn {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #breadcrumb {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .breadcrumb-link::after {
@@ -91,10 +92,11 @@ ul.block-list li {
 
 .list-header {
     border-bottom: 1px solid;
+    font-weight: bold;
 }
 
 #filter {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .cell-2 {
