@@ -86,7 +86,6 @@ ul.block-list li {
 .selected-item a {
     color: #000;
     background-color: #eee;
-    pointer-events: none;
     cursor: default;
 }
 

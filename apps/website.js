@@ -1,5 +1,3 @@
-// A hash to store our pages.
-var pages = {}
 var resource;
 
 const loadGeneralInfo = () => {
@@ -26,58 +24,23 @@ const loadSettings = () => {
     })
 }
 
-const getPageContent = (options) => {
-    // OPtions needs to include resource data.
-    const page = pages[options.path]
-    
-    return new Promise((resolve, reject) => {
-        page.load(options).then((template) => {
-            resolve(template)
-        })
-    })
-}
-
 const loadWebsite = (options) => {
-    const resourceId = options.resourceId
-
-    // Registers a route.
-    const route = (path, loadFn) => {
-        pages[path] = { load: loadFn }
-    }
+    // Registers routes.
+    route("resources/websites/generalInfo", loadGeneralInfo)
+    route("/publish/websites/publish", loadPublish)
+    route("/settings/websites/settings", loadSettings)
     
-    // Prevents internal links from changing hash.
-    $(".internal-link").on("click", (event) => {
-        event.preventDefault()
-        const target = event.target
-        const url = $(target).attr("href")
-        // get the query params from url to get the 
-        
-        window.history.replaceState("", url, url)
-        getPageContent(url)
-    })
-    
-    // window.on("popstate", () => {
-    //     if (event.state === "replace") {
-    //         getPageContent()
-    //     }
-    // })
-    
-    route("/generalInfo", loadGeneralInfo)
-    route("/publish", loadPublish)
-    route("/settings", loadSettings)
-    
-    const menuItems = [{ name: "General Info", url: "/info" }, { name: "Publish", url: "/publish" }, { name: "Settings", url: "/settings" }]
-        
-    // Creates menu template.
-    const menuTemplate = `<ul id="menu" class="block-list">${menuItems.map(item => `<li><a class="internal-link" href="#/resources/resource:${options.params}/${item.url}">${item.name}</a></li>`).join("")}</ul>`
+    const resourceId = options.query.id
+    const menuItems = [{ name: "General Info", url: "/generalInfo", replaceState: true }, { name: "Publish", url: "/publish", replaceState: true }, { name: "Settings", url: "/settings", replaceState: true }]
     
     return new Promise((resolve, reject) => {
         getResourceById(resourceId).then((data) => {
             // By default loads general info.
             resource = data
-            loadGeneralInfo()
+            return loadGeneralInfo()
         }).then((contentTemplate) => {
-            const template = `${menuTemplate}<div id="page-content">${contentTemplate}</div>`
+            const menu = new Menu(menuItems)
+            const template = `${menu.render()}<div id="page-content">${contentTemplate}</div>`
             resolve(template)
         })
     })
