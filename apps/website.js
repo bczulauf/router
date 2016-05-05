@@ -26,9 +26,9 @@ const loadSettings = () => {
 
 const loadWebsite = (options) => {
     // Registers routes.
-    route("resources/websites/generalInfo", loadGeneralInfo)
-    route("/publish/websites/publish", loadPublish)
-    route("/settings/websites/settings", loadSettings)
+    route("resources/website/generalInfo", loadGeneralInfo)
+    route("resources/website/publish", loadPublish)
+    route("resources/website/settings", loadSettings)
     
     const resourceId = options.query.id
     const menuItems = [{ name: "General Info", url: "/generalInfo", replaceState: true }, { name: "Publish", url: "/publish", replaceState: true }, { name: "Settings", url: "/settings", replaceState: true }]
