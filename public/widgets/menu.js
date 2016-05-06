@@ -1,5 +1,5 @@
 class Menu {
-    constructor (items) {
+    constructor (element, items) {
         const url = location.hash.slice(1) || "/"
         const pathQuery = url.split("?")
         const path = pathQuery[0]
@@ -11,10 +11,10 @@ class Menu {
     }
     
     addHandler (replaceState) {
-        return replaceState ? `onclick="replaceState(event)"` : ""
+        return replaceState ? `onclick="router.replaceState(event)"` : ""
     }
     
     render () {
-        return this.template
+        this.element.html(this.template)
     }
 }

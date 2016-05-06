@@ -30,25 +30,28 @@ ul.block-list li {
     padding: 5px 0;
 }
 
-#nav {
+#topbar {
+    display: flex;
     margin-bottom: 10px;
     padding: 10px 0;
     border-bottom: 1px solid;
 }
 
+#home {
+    flex: 0 0 auto;
+}
+
+#nav {
+    flex: 0 0 auto;
+}
+
 #nav li {
-    margin-right: 10px;
+    padding: 0 10px;
 }
 
 #nav a {
     text-decoration: none;
     text-transform: capitalize;
-}
-
-#notifications {
-    border: 1px solid;
-    padding: 4px 10px;
-    margin-bottom: 10px;
 }
 
 .divider {
@@ -83,9 +86,12 @@ ul.block-list li {
     text-decoration: none;
 }
 
+.selected-item {
+    background-color: #eee;
+}
+
 .selected-item a {
     color: #000;
-    background-color: #eee;
     cursor: default;
 }
 
@@ -112,4 +118,8 @@ ul.block-list li {
 
 .row {
     display: flex;
+}
+
+.stretch {
+    flex: 1 1 auto;
 }
