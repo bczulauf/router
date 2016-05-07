@@ -22,6 +22,10 @@ li {
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 ul.inline-list li {
     display: inline-block;
 }
@@ -32,7 +36,6 @@ ul.block-list li {
 
 #topbar {
     display: flex;
-    margin-bottom: 10px;
     padding: 10px 0;
     border-bottom: 1px solid;
 }
@@ -50,7 +53,6 @@ ul.block-list li {
 }
 
 #nav a {
-    text-decoration: none;
     text-transform: capitalize;
 }
 
@@ -67,7 +69,8 @@ ul.block-list li {
 }
 
 #breadcrumb {
-    margin-bottom: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid;
 }
 
 .breadcrumb-link::after {
@@ -122,4 +125,20 @@ ul.block-list li {
 
 .stretch {
     flex: 1 1 auto;
+}
+
+.flex-container {
+    display: flex;
+}
+
+#page-content {
+    flex: 1 1 auto;
+    padding: 10px;
+}
+
+#menu {
+    flex: 0 0 auto;
+    width: 140px;
+    overflow: hidden;
+    border-right: 1px solid;
 }

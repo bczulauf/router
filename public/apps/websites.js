@@ -27,7 +27,7 @@ const loadWebsite = (options) => {
     const resourceId = options.query.id
     const menuItems = [{ name: "General Info", url: "/generalInfo", replaceState: true }, { name: "Publish", url: "/publish", replaceState: true }, { name: "Settings", url: "/settings", replaceState: true }]
     const menu = new Menu(null, menuItems)
-    const template = `${menu.template}<div id="page-content"></div>`
+    const template = `<div class="flex-container">${menu.template}<div id="page-content"></div></div>`
     
     page.html(template)
     

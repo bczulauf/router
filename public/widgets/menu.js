@@ -7,7 +7,7 @@ class Menu {
         this.items = items
         this.template = 
         `<ul id="menu" class="block-list">
-        ${items.map(item => `<li><a href="#${path}${item.url}" ${this.addHandler(item.replaceState)}>${item.name}</a></li>`).join("")}</ul>`
+        ${items.map(item => `<li><a href="#${path}${item.url}">${item.name}</a></li>`).join("")}</ul>`
     }
     
     addHandler (replaceState) {

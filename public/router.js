@@ -29,7 +29,6 @@ class Router {
         
         // Splits the path into parts.
         const parts = path.split("/")
-        obj.parts = parts
         
         const count = parts.length
         obj.params = parts[count - 1].split(":")[1]
@@ -47,29 +46,41 @@ class Router {
         this.loadPage()
     }
     
-    replaceState (event, data) {
-        event.preventDefault()
-        const target = event.target
-        const href = $(target).attr("href")
-        const element = data && data.element
+    // replaceState (event, data) {
+    //     event.preventDefault()
+    //     const target = event.target
+    //     const href = $(target).attr("href")
+    //     const element = data && data.element
         
-        window.history.replaceState("", href, href)
+    //     window.history.replaceState("", href, href)
         
-        this.loadPage()
-    }
+    //     this.loadPage()
+    // }
     
     loadPage () {
         const url = location.hash.slice(1) || "/"
         const friendlyUrl = this._getUrlObj(url)
         const route = this.routes[friendlyUrl.route]
-        const parts = friendlyUrl.parts
+        const parts = url.split("/")
         
         if (route.load) {
             route.load({ params: friendlyUrl.params, query: friendlyUrl.query })
 
             // Updates the breadcrumb
-            const breadcrumbs = parts.splice(1, parts.length - 1).map((n) => {
-                return { url: `#/${n}`, name: n }
+            var currentBreadcrumb
+            
+            const breadcrumbs = parts.splice(1, parts.length - 1).map((part) => {
+                const name = part
+                
+                if (currentBreadcrumb) {
+                    part = `${currentBreadcrumb}/${part}`
+                } else {
+                    part = `#/${part}` 
+                }
+                
+                currentBreadcrumb = part
+                
+                return { url: part, name: name.split("?")[0] }
             })
             
             if (this.breadcrumb) {
