@@ -51,7 +51,7 @@ for (page of pages) {
 const router = new Router(routes, { nav: nav, breadcrumb: breadcrumb })
 
 // Registers routes.
-router.addRoute("/resources/website", loadWebsite)
-router.addRoute("/resources/website/generalInfo", loadGeneralInfo)
-router.addRoute("/resources/website/publish", loadPublish)
-router.addRoute("/resources/website/settings", loadSettings)
+router.addRoute("/resources/website/:resourceId", loadWebsite)
+router.addRoute("/resources/website/:resourceId/generalInfo", loadGeneralInfo)
+router.addRoute("/resources/website/:resourceId/publish", loadPublish)
+router.addRoute("/resources/website/:resourceId/settings", loadSettings)
