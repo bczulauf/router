@@ -1,15 +1,20 @@
+// This should be a promise!!!!!!!!!!!!!!
 const loadApp = (resourceId) => {
     // Checks if website app is already loaded.
-    if ($("#website").length > 0) {
-        return
+    if ($("#website").length === 0) {
+        const page = $("#page")
+        const menuItems = [{ name: "General Info", url: `/?id=${resourceId}`, replaceState: true }, { name: "Publish", url: `/publish/?id=${resourceId}`, replaceState: true }, { name: "Settings", url: `/settings/?id=${resourceId}`, replaceState: true }]
+        const menu = new Menu(null, menuItems)
+        const template = `<div id="website" class="flex-container">${menu.template}<div id="page-content"></div></div>`
+        
+        page.html(template)
     }
-
-    const page = $("#page")
-    const menuItems = [{ name: "General Info", url: `/?id=${resourceId}`, replaceState: true }, { name: "Publish", url: `/publish/?id=${resourceId}`, replaceState: true }, { name: "Settings", url: `/settings/?id=${resourceId}`, replaceState: true }]
-    const menu = new Menu(null, menuItems)
-    const template = `<div id="website" class="flex-container">${menu.template}<div id="page-content"></div></div>`
     
-    page.html(template)
+    return new Promise(function(resolve, reject) {
+        getResourceById(resourceId).then((data) => {
+            resolve(data)
+        })
+    })
 }
 
 const loadGeneralInfo = (options) => {
@@ -17,8 +22,9 @@ const loadGeneralInfo = (options) => {
     const pageContent = $("#page-content")
     const template = `This is some general info. ${resourceId.name}`
     
-    loadApp(resourceId)
-    pageContent.html(template)
+    loadApp(resourceId).then((data) => {
+        pageContent.html(template)    
+    })
 }
 
 const loadPublish = (options) => {
@@ -42,9 +48,4 @@ const loadWebsite = (options) => {
     const resourceId = options.params
     
     loadApp(resourceId)
-    
-    getResourceById(resourceId).then((data) => {
-        // By default loads general info.
-        loadGeneralInfo()
-    })
 }
