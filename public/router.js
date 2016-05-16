@@ -34,7 +34,6 @@ class Router {
         const path = splitUrl[0]
         const queryStr = splitUrl[1]
         const parts = path.split("/").filter(Boolean)
-        const historyName = parts[parts.length - 1]
 
         this.rootPage = parts[0]
 
@@ -43,35 +42,46 @@ class Router {
 
         // Parses the params.
         var params = []
-        var routes = parts.slice(0)
-        var historyList = parts.slice(0)
+        var routeParts = parts.slice(0)
         parts.forEach((part, index) => {
             const paramKey = this.paramLookup[part]
 
             if (paramKey) {
-                const param = routes.splice(index + 1, 1)
-                historyList.splice(index, 1)
+                const param = routeParts.splice(index + 1, 1)
                 params.push(param[0])
             }
         })
 
         // Looks up route.
-        const route = this.routes[`/${routes.join("/")}`]
+        const route = this.routes[`/${routeParts.join("/")}`]
         if (route.load) {
             route.load({ params: params, query: query })
         }
         
         // Updates the router history.
-        for (var i = 0; i < historyList.length; i++) {
-            var historyPart = this.history[i] && this.history[i].name
-            if (historyList[i] !== historyPart) {
-                this.history.splice(i, this.history.length - i)
-                this.history.push({ name: historyName, url: url })
-                break
-            }
+        this.history = []
+        var historyParts = parts.slice(0)
+        var root = "#"
+        historyParts.map((part, index) => {
+            const paramKey = this.paramLookup[part]
+            var name
+            var url
             
-            // Handles back button case.
-            this.history.splice(historyList.length, this.history.length - historyList.length)
-        }
+            if (paramKey) {
+                // History show params.
+                const paramIndex = index + 1
+                name = historyParts[paramIndex]
+                url = `${root}/${part}/${historyParts[paramIndex]}`
+
+                // Makes sure we skip over the param.
+                historyParts.splice(paramIndex, 1)
+            } else {
+                name = part
+                url = `${root}/${part}`
+            }
+
+            root = url
+            this.history.push({ url: url, name: name })
+        })
     }
 }

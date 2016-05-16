@@ -3,7 +3,7 @@ const loadApp = (resourceId) => {
     // Checks if website app is already loaded.
     if ($("#website").length === 0) {
         const page = $("#page")
-        const menuItems = [{ name: "General Info", url: `/?id=${resourceId}`, replaceState: true }, { name: "Publish", url: `/publish/?id=${resourceId}`, replaceState: true }, { name: "Settings", url: `/settings/?id=${resourceId}`, replaceState: true }]
+        const menuItems = [{ name: "General Info", url: `/?id=${resourceId}` }, { name: "Publish", url: `/publish/?id=${resourceId}` }, { name: "Settings", url: `/settings/?id=${resourceId}` }]
         const menu = new Menu(null, menuItems)
         const template = `<div id="website" class="flex-container">${menu.template}<div id="page-content"></div></div>`
         
@@ -48,7 +48,7 @@ const loadSettings = (options) => {
 }
 
 const loadWebsite = (options) => {
-    const resourceId = options.params
+    const resourceId = options.query.id
     
     loadApp(resourceId)
 }
