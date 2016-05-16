@@ -19,29 +19,32 @@ const loadApp = (resourceId) => {
 
 const loadGeneralInfo = (options) => {
     const resourceId = options.query.id
-    const pageContent = $("#page-content")
-    const template = `This is some general info. ${resourceId.name}`
     
     loadApp(resourceId).then((data) => {
+        const pageContent = $("#page-content")
+        const template = `This is some general info for ${data.name}`
         pageContent.html(template)    
     })
 }
 
 const loadPublish = (options) => {
     const resourceId = options.query.id
-    const pageContent = $("#page-content")
-    const template = `This is the url we are publishing to ${resourceId.url}`
 
-    loadApp(resourceId)
-    pageContent.html(template)
+    loadApp(resourceId).then((data) => {
+        const pageContent = $("#page-content")
+        const template = `This is the url we are publishing to ${data.url}`
+        pageContent.html(template)  
+    })
 }
 
-const loadSettings = () => {
-    const pageContent = $("#page-content")
-    const template = `Here is some content.`
+const loadSettings = (options) => {
+    const resourceId = options.query.id
 
-    loadApp(resourceId)
-    pageContent.html(template)
+    loadApp(resourceId).then((data) => {
+        const pageContent = $("#page-content")
+        const template = `Here is the ip ${data.ip}`
+        pageContent.html(template)
+    })
 }
 
 const loadWebsite = (options) => {

@@ -1,113 +1,77 @@
 class Router {
     constructor (routes, options) {
         this.routes = routes
-        this.breadcrumb = options && options.breadcrumb
         this.nav = options && options.nav
-        
+        this.history = []
+        this.rootPage = ""
+
         // TODO: make sure initial routes are parameterized
-        this.parameterLookup = {}
-        
-        // Listens on hash change.
-        window.addEventListener("hashchange", () => {
-            this.loadPage()
-        })
-
-        // Listens on page load.
-        window.addEventListener("load", () => {
-            this.loadPage()
-        })
+        this.paramLookup = {}
     }
-    
-    _getUrlObj (url) {
-        var obj = {}
-        
-        const splitUrl = url.split("?")
-        const path = splitUrl[0]
-        const query = splitUrl[1]
-        const parts = path.split("/")
-        
-        parts.forEach((part, index) => {
-            // Checks to see if part is a known to be followed by a parameter.
-            const ref = this.parameterLookup[part]
-            
-            if (ref) {
-                const param = parts.splice(index + 1, 1)
-                obj.params = param[0]
-            }
-        })
 
-        // Todo: clean this up.
-        obj.route = parts.join("/")
-        //obj.route = path.replace( /:.*?\//g, "/" ).replace(/\/$/, "")
-        
-        obj.query = query && query.split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0]
-        
-        return obj
-    }
-    
     addRoute (path, loadFn) {
         const parts = path.split("/")
         const count = parts.length
 
         if (parts[parts.length - 1].indexOf(":") > -1) {
-            this.parameterLookup[parts[parts.length - 2]] = parts[parts.length - 1].replace( /:/, "" )
+            this.paramLookup[parts[parts.length - 2]] = parts[parts.length - 1].replace( /:/, "" )
             path = path.split(":")[0].replace(/\/$/, "")
         }
-        
+
         this.routes[path] = { load: loadFn }
     }
-    
-    addRedirect (url) {
-        window.history.replaceState("", redirectUrl, redirectUrl)
-        
-        this.loadPage()
+
+    redirect (path, options) {
+        const route = this.routes[path]
+        window.history.replaceState("", path, path)
+
+        route.load(options)
     }
-    
-    // replaceState (event, data) {
-    //     event.preventDefault()
-    //     const target = event.target
-    //     const href = $(target).attr("href")
-    //     const element = data && data.element
-        
-    //     window.history.replaceState("", href, href)
-        
-    //     this.loadPage()
-    // }
-    
+
     loadPage () {
         const url = location.hash.slice(1) || "/"
-        const friendlyUrl = this._getUrlObj(url)
-        const route = this.routes[friendlyUrl.route]
-        const parts = url.split("/")
-        
-        if (route.load) {
-            route.load({ params: friendlyUrl.params, query: friendlyUrl.query })
+        const splitUrl = url.split("?")
+        const path = splitUrl[0]
+        const queryStr = splitUrl[1]
+        const parts = path.split("/").filter(Boolean)
+        const historyName = parts[parts.length - 1]
 
-            // Updates the breadcrumb
-            var currentBreadcrumb
-            
-            const breadcrumbs = parts.splice(1, parts.length - 1).map((part) => {
-                const name = part
-                
-                if (currentBreadcrumb) {
-                    part = `${currentBreadcrumb}/${part}`
-                } else {
-                    part = `#/${part}` 
-                }
-                
-                currentBreadcrumb = part
-                
-                return { url: part, name: name.split("?")[0] }
-            })
-            
-            if (this.breadcrumb) {
-                this.breadcrumb.update(breadcrumbs)
-                this.breadcrumb.render()
+        this.rootPage = parts[0]
+
+        // Parses the query.
+        const query = queryStr && queryStr.split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0]
+
+        // Parses the params.
+        var params = []
+        var routes = parts.slice(0)
+        var historyList = parts.slice(0)
+        parts.forEach((part, index) => {
+            const paramKey = this.paramLookup[part]
+
+            if (paramKey) {
+                const param = routes.splice(index + 1, 1)
+                historyList.splice(index, 1)
+                params.push(param[0])
+            }
+        })
+
+        // Looks up route.
+        const route = this.routes[`/${routes.join("/")}`]
+        if (route.load) {
+            route.load({ params: params, query: query })
+        }
+        
+        // Updates the router history.
+        for (var i = 0; i < historyList.length; i++) {
+            var historyPart = this.history[i] && this.history[i].name
+            if (historyList[i] !== historyPart) {
+                this.history.splice(i, this.history.length - i)
+                this.history.push({ name: historyName, url: url })
+                break
             }
             
-            if (this.nav) {
-                this.nav.updateSelection(breadcrumbs[0].name)
-            }
+            // Handles back button case.
+            this.history.splice(historyList.length, this.history.length - historyList.length)
         }
     }
 }

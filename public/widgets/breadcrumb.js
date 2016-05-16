@@ -1,15 +1,14 @@
 class Breadcrumb {
-    constructor(element, items) {
+    constructor(element) {
         this.element = element
+    }
+    
+    load (items) {
+        const template = 
+        `<ul class="inline-list">
+        ${items.map(item => `<li class="breadcrumb-link"><a href="${item.url}">${item.name}</a></li>`).join("")}
+        </ul>`
         
-        this.template = `<ul class="inline-list">${items.map(item => `<li class="breadcrumb-link"><a href="${item.url}">${item.name}</a></li>`).join("")}</ul>`
-    }
-    
-    update (items) {
-        this.template = `<ul class="inline-list">${items.map(item => `<li class="breadcrumb-link"><a href="${item.url}">${item.name}</a></li>`).join("")}</ul>`
-    }
-    
-    render () {
-        this.element.html(this.template)
+        this.element.html(template)
     }
 }
