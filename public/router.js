@@ -7,18 +7,24 @@ class Router {
 
         // TODO: make sure initial routes are parameterized
         this.paramLookup = {}
+        this.queries = {}
     }
 
     addRoute (path, loadFn) {
-        const parts = path.split("/")
-        const count = parts.length
+        var parts = path.split("/").filter(Boolean)
 
-        if (parts[parts.length - 1].indexOf(":") > -1) {
-            this.paramLookup[parts[parts.length - 2]] = parts[parts.length - 1].replace( /:/, "" )
-            path = path.split(":")[0].replace(/\/$/, "")
-        }
+        parts.forEach((part, index) => {
+            if (part.indexOf(":") > -1) {
+                this.paramLookup[parts[index - 1]] = parts[index].replace(/:/, "")
+                parts.splice(index, 1)
+            }
+        })
 
-        this.routes[path] = { load: loadFn }
+        this.routes[`/${parts.join("/")}`] = { load: loadFn }
+    }
+    
+    addQuery (path, query) {
+        this.queries[path] = query
     }
 
     redirect (path, options) {
@@ -39,6 +45,10 @@ class Router {
 
         // Parses the query.
         const query = queryStr && queryStr.split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0]
+
+        if (query) {
+            this.addQuery(`#${path}`, query)
+        }
 
         // Parses the params.
         var params = []
@@ -68,7 +78,7 @@ class Router {
             var url
             
             if (paramKey) {
-                // History show params.
+                // History shows params.
                 const paramIndex = index + 1
                 name = historyParts[paramIndex]
                 url = `${root}/${part}/${historyParts[paramIndex]}`
@@ -81,6 +91,10 @@ class Router {
             }
 
             root = url
+            
+            if (this.queries[url]) {
+                url = `${url}/?${this.queries[url]}`
+            }
             this.history.push({ url: url, name: name })
         })
     }
