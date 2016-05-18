@@ -67,7 +67,8 @@ ul.block-list li {
     margin-bottom: 5px;
 }
 
-.create-btn {
+.actions {
+    display: flex;
     margin-bottom: 10px;
 }
 
@@ -154,4 +155,18 @@ ul.block-list li {
 
 .one-column {
     padding: 10px;
+}
+
+.product {
+    border: 1px solid;
+    display: inline-block;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.link-btn {
+    border: 1px solid;
+    color: #000;
+    background-color: #eee;
+    padding: 5px 10px;
 }

@@ -21,3 +21,17 @@ const getResourceById = (id) => {
         resolve(data)
     })
 }
+
+// Mocks the get resource types call.
+const getResourceTypes = () => {
+    return new Promise(function(resolve, reject) {
+        resolve([{ name: "website", owner: "microsoft" }, { name: "virtual machine", owner: "microsoft" }, { name: "SQL database", owner: "microsoft" }, { name: "Redis cache", owner: "microsoft" }, { name: "Application Insights", owner: "microsoft" }])
+    })
+}
+
+// Mocks the get product.
+const getProduct = () => {
+    return new Promise(function(resolve, reject) {
+        resolve({})
+    })
+}

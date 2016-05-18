@@ -47,7 +47,7 @@ class Router {
         const query = queryStr && queryStr.split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0]
 
         if (query) {
-            this.addQuery(`#${path}`, query)
+            this.addQuery(`#${path.replace(/\/$/, "")}`, queryStr)
         }
 
         // Parses the params.
@@ -61,10 +61,20 @@ class Router {
                 params.push(param[0])
             }
         })
+        
+        // Starts to implement mo's work.
+        for (var i = 0; i < this.routes; i++) {
+            const match = matchUri(this.routes[i], path)
+            
+            if (match) {
+                // creates url and calls dispatch (rename load)
+            }
+        }
 
         // Looks up route.
         const route = this.routes[`/${routeParts.join("/")}`]
         if (route.load) {
+            // this becomes a returned promise that we could cancel, throttle, queue
             route.load({ params: params, query: query })
         }
         
@@ -91,7 +101,7 @@ class Router {
             }
 
             root = url
-            
+
             if (this.queries[url]) {
                 url = `${url}/?${this.queries[url]}`
             }

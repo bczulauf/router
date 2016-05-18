@@ -54,8 +54,10 @@ loadHome = (options) => {
 
 // Registers routes.
 router.addRoute("/", loadHome)
-router.addRoute("/resources/website/:resourceId", loadWebsite)
-router.addRoute("/resources/website/generalInfo", loadGeneralInfo)
+router.addRoute("/market", loadMarket)
+router.addRoute("/market/product/:product", loadProduct)
+router.addRoute("/resources/website/:resource", loadWebsite)
+router.addRoute("/resources/website/Info", loadInfo)
 router.addRoute("/resources/website/publish", loadPublish)
 router.addRoute("/resources/website/settings", loadSettings)
 
@@ -67,6 +69,7 @@ window.addEventListener("hashchange", () => {
 })
 
 // Listens on page load.
+// is this necessary?
 window.addEventListener("load", () => {
     router.loadPage()
     breadcrumb.load(router.history)

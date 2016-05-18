@@ -19,7 +19,7 @@ const loadApp = (options) => {
     })
 }
 
-const loadGeneralInfo = (options) => {
+const loadInfo = (options) => {
     loadApp(options).then((data) => {
         const pageContent = $("#page-content")
         const template = `This is some general info for ${data.name}`
