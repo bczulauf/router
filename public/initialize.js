@@ -46,20 +46,26 @@ for (page of navLinks) {
     routes[page.url] = { load: page.load }
 }
 
-const router = new Router(routes, { nav: nav, breadcrumb: breadcrumb })
+const router = new Router()
 
 loadHome = (options) => {
     router.redirect("/resources", options)
 }
 
 // Registers routes.
-router.addRoute("/", loadHome)
+//router.addRoute("/", loadHome) breaks regex
 router.addRoute("/market", loadMarket)
 router.addRoute("/market/product/:product", loadProduct)
+router.addRoute("/resources", loadResources)
 router.addRoute("/resources/website/:resource", loadWebsite)
 router.addRoute("/resources/website/Info", loadInfo)
 router.addRoute("/resources/website/publish", loadPublish)
 router.addRoute("/resources/website/settings", loadSettings)
+router.addRoute("/dashboards", loadDashboards)
+router.addRoute("/help", loadHelp)
+router.addRoute("/billing", loadBilling)
+router.addRoute("/notifications", loadNotifications)
+router.addRoute("/account", loadAccount)
 
 // Listens on hash change.
 window.addEventListener("hashchange", () => {
