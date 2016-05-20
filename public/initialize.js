@@ -53,23 +53,24 @@ loadHome = (options) => {
 }
 
 // Registers routes.
-//router.addRoute("/", loadHome) breaks regex
-router.addRoute("/market", loadMarket)
-router.addRoute("/market/product/:product", loadProduct)
-router.addRoute("/resources", loadResources)
+// Ordering matters here. most specific first.
+router.addRoute("/", loadHome)
+router.addRoute("/resources/website/:resource/Info", loadInfo)
+router.addRoute("/resources/website/:resource/publish", loadPublish)
+router.addRoute("/resources/website/:resource/settings", loadSettings)
 router.addRoute("/resources/website/:resource", loadWebsite)
-router.addRoute("/resources/website/Info", loadInfo)
-router.addRoute("/resources/website/publish", loadPublish)
-router.addRoute("/resources/website/settings", loadSettings)
+router.addRoute("/resources", loadResources)
 router.addRoute("/dashboards", loadDashboards)
 router.addRoute("/help", loadHelp)
 router.addRoute("/billing", loadBilling)
 router.addRoute("/notifications", loadNotifications)
 router.addRoute("/account", loadAccount)
+router.addRoute("/market/product/:product", loadProduct)
+router.addRoute("/market", loadMarket)
 
 // Listens on hash change.
 window.addEventListener("hashchange", () => {
-    router.loadPage()
+    router.dispatch()
     breadcrumb.load(router.history)
     nav.updateSelected(router.rootPage)
 })
@@ -77,7 +78,7 @@ window.addEventListener("hashchange", () => {
 // Listens on page load.
 // is this necessary?
 window.addEventListener("load", () => {
-    router.loadPage()
+    router.dispatch()
     breadcrumb.load(router.history)
     nav.updateSelected(router.rootPage)
 })

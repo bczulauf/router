@@ -11,8 +11,8 @@ class Router {
         this.queries = {}
     }
 
-    addRoute (url, dispatch) {
-        this.routes.push({ url: url, dispatch: dispatch })
+    addRoute (url, handler) {
+        this.routes.push({ url: url, handler: handler })
     }
     
     addQuery (path, query) {
@@ -26,7 +26,7 @@ class Router {
         route.load(options)
     }
 
-    loadPage () {
+    dispatch () {
         const url = location.hash.slice(1) || "/"
         const splitUrl = url.split("?")
         const path = splitUrl[0]
@@ -41,35 +41,17 @@ class Router {
         if (query) {
             this.addQuery(`#${path.replace(/\/$/, "")}`, queryStr)
         }
-
-        // Parses the params.
-        // var params = []
-        // var routeParts = parts.slice(0)
-        // parts.forEach((part, index) => {
-        //     const paramKey = this.paramLookup[part]
-
-        //     if (paramKey) {
-        //         const param = routeParts.splice(index + 1, 1)
-        //         params.push(param[0])
-        //     }
-        // })
         
-        // Starts to implement mo's work.
+        // Looks up route.
         for (var i = 0; i < this.routes.length; i++) {
             const route = this.routes[i]
             const match = this.matchUri(route.url, path)
             
             if (match) {
-                route.dispatch({ params: match, query: query })
+                route.handler({ params: match, query: query })
+                break
             }
         }
-
-        // // Looks up route.
-        // const route = this.routes[`/${routeParts.join("/")}`]
-        // if (route.load) {
-        //     // this becomes a returned promise that we could cancel, throttle, queue
-        //     route.load({ params: params, query: query })
-        // }
         
         // Updates the router history.
         this.history = []
