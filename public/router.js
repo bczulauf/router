@@ -23,7 +23,7 @@ class Router {
         const route = this.routes[path]
         window.history.replaceState("", path, path)
 
-        route.load(options)
+        route.dispatch(options)
     }
 
     dispatch () {
