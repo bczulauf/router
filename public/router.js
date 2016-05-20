@@ -14,10 +14,6 @@ class Router {
     addRoute (url, handler) {
         this.routes.push({ url: url, handler: handler })
     }
-    
-    addQuery (path, query) {
-        this.queries[path] = query
-    }
 
     redirect (path, options) {
         const route = this.routes[path]
@@ -31,56 +27,44 @@ class Router {
         const splitUrl = url.split("?")
         const path = splitUrl[0]
         const queryStr = splitUrl[1]
-        const parts = path.split("/").filter(Boolean)
-
-        this.rootPage = parts[0]
 
         // Parses the query.
         const query = queryStr && queryStr.split("&").map(function(n){return n=n.split("="),this[n[0]]=n[1],this;}.bind({}))[0]
 
+        // Saves a reference of the query for the router history.
         if (query) {
-            this.addQuery(`#${path.replace(/\/$/, "")}`, queryStr)
+            this.queries[`#${path.replace(/\/$/, "")}`] = queryStr
         }
         
-        // Looks up route.
+        // Performs a pattern match.
+        var params
         for (var i = 0; i < this.routes.length; i++) {
             const route = this.routes[i]
-            const match = this.matchUri(route.url, path)
+            params = this.matchUri(route.url, path)
             
-            if (match) {
-                route.handler({ params: match, query: query })
+            if (params) {
+                route.handler({ params: params, query: query })
                 break
             }
         }
         
         // Updates the router history.
         this.history = []
-        var historyParts = parts.slice(0)
-        var root = "#"
-        historyParts.map((part, index) => {
-            const paramKey = this.paramLookup[part]
-            var name
-            var url
-            
-            if (paramKey) {
-                // History shows params.
-                const paramIndex = index + 1
-                name = historyParts[paramIndex]
-                url = `${root}/${part}/${historyParts[paramIndex]}`
-
-                // Makes sure we skip over the param.
-                historyParts.splice(paramIndex, 1)
+        var historyPath = "#"
+        const parts = path.split("/").filter(Boolean)
+        parts.forEach((part, index) => {
+            // WONT WORK. NEED REVERSE PATTERN MATCH???
+            if (params[part] && params[part] === parts[index + 1]) {
+                
             } else {
-                name = part
-                url = `${root}/${part}`
+                var url = `${historyPath}/${part}`
+                
+                if (this.queries[url]) {
+                    url = `${url}/?${this.queries[url]}`
+                }
+                
+                this.history.push({ url: url, name: part })    
             }
-
-            root = url
-
-            if (this.queries[url]) {
-                url = `${url}/?${this.queries[url]}`
-            }
-            this.history.push({ url: url, name: name })
         })
     }
     

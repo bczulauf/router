@@ -54,7 +54,7 @@ loadHome = (options) => {
 
 // Registers routes.
 // Ordering matters here. most specific first.
-router.addRoute("/", loadHome)
+//router.addRoute("/", loadHome)
 router.addRoute("/resources/website/:resource/Info", loadInfo)
 router.addRoute("/resources/website/:resource/publish", loadPublish)
 router.addRoute("/resources/website/:resource/settings", loadSettings)
